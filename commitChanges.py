@@ -22,24 +22,27 @@ headers = {
 
 
 def getFileSHA():
+    # returns the file's SHA hash by requesting it to GitHub's API
     response = requests.get(api_url, headers=headers)
     return response.json()["sha"]
     
 
 def loadActivity():
+    # returns a Dict object of the content of activity.json
     with open("activity.json", "rb") as activity:
         data = base64.b64encode(activity.read()).decode("utf-8")
     return data
 
 
 def isWipeDay(today: datetime):
-
+    # returns True if the file should be cleaned
     with open("activity.json", "r") as activity:
         data = dict(json.load(activity))
         lastWipe = data.get("last_wipe")
 
     # the activity hasn't been wiped today and today is sunday 
-    if lastWipe != str(today.date()) and today.weekday() == 0:
+    # sunday = 6
+    if lastWipe != str(today.date()) and today.weekday() == 6:
         with open("activity.json", "w") as activity:
             data = {"last_wipe": str(today.date())}
             activity.write(json.dumps(data, indent=4)) # writes only the last wipe day
@@ -49,6 +52,10 @@ def isWipeDay(today: datetime):
 
 
 def commitActivity():
+
+    # sends a post request with the content of the activity.json file
+    # https://docs.github.com/en/rest
+    # calls isWipeDay() the clean the file if today is a sunday and the file hasn't been clean today
 
     isWipeDay(datetime.today())
     fileContent = loadActivity()
