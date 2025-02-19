@@ -5,6 +5,8 @@ import os
 import re
 from datetime import datetime
 import json
+from commitChanges import commitActivity
+
 
 tags = [
     # one-tags that must be tracked
@@ -13,13 +15,12 @@ tags = [
     "python", ["py", "python"], "java", "selenium", "javascript", ["js", "javascript"], 
     "flutter", "bootstrap", "spring", ["nlp", "natural language processing"], "flask",
     ["pln", "natural language processing"], "html", "css", "git", "django",
-    "github", "react", "angular", "linkedin", "json", ["ts", "typescript"]
+    "github", "react", "angular", "linkedin", "json", ["ts", "typescript"],
     
 ]
 
 multiTags = [
-
-    "visual studio code", "stack overflow", "natural language processing" 
+    "visual studio code", "stack overflow", "natural language processing", "tensor flow" 
 ]
 
 def checkForIntelliJ():
@@ -82,6 +83,7 @@ def writeAcitivity(tags, time):
 
 
 checkForIntelliJ()
+lastcommit = datetime.now()
 
 while True:
 
@@ -89,6 +91,7 @@ while True:
     # and the current time is stored in "start"
     # the program sleeps until the program identifies changes in the tags
     # and then it writes the tags and how much time in hours they have been positive 
+    # commit changes every 5 hours
 
     current = getFocus()
     start = datetime.now()
@@ -99,6 +102,10 @@ while True:
     
     elapsed = datetime.now() - start 
     elapsed = (elapsed.total_seconds())/3600
+    
     writeAcitivity(current, elapsed)
+
+    if ((datetime.now() - lastcommit).total_seconds()/3600) >= 5:
+        commitActivity()
 
      

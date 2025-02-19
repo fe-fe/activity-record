@@ -1,8 +1,10 @@
 {
-    "visual_studio_code": 0.10001927055555557,
-    "python": 0.09029565444444444,
-    "javascript": 0.0055562575,
-    "json": 0.00972361611111111,
-    "java": 0.0027782124999999997,
-    "github": 0.01111239861111111
+    "visual_studio_code": 0.259,
+    "python": 0.173,
+    "javascript": 0.027,
+    "json": 0.086,
+    "java": 0.018,
+    "github": 0.057,
+    "spring": 0.007,
+    "natural_language_processing": 0.022
 }
