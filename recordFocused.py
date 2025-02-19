@@ -1,18 +1,8 @@
-from win32gui import GetWindowText, GetForegroundWindow, GetClassName
+from win32gui import GetWindowText, GetForegroundWindow
 from time import sleep
 from getpass import getuser
 import os
-
-
-tracked = [
-#   (title in window, title to be shown if positive)
-    ["Visual Studio Code"],
-    ["Stack Overflow - Brave", "Stack Overflow"],
-    ["Linkedin"],
-    ["Command Prompt"],
-    ["GitHub Desktop", "GitHub"]
-]
-
+import re
 
 tags = [
     # tags that must be tracked
@@ -20,9 +10,13 @@ tags = [
     # and the second is the one to be shown
     "python", ["py", "python"], "java", "selenium", "javascript", ["js", "javascript"], "django", "flask",
     "flutter", "bootstrap", "spring", ["nlp", "natural language processing"], "html", "css", "git",
-    "github", "react", "angular"
+    "github", "react", "angular", "linkedin", "stack overflow",
+    
 ]
 
+multiTags = [
+    "visual studio code", "stack overflow", "natural language processing" 
+]
 
 def checkForIntelliJ():
     # appends to the tracked list the name of the projects from your IntelliJ folder
@@ -31,21 +25,7 @@ def checkForIntelliJ():
     path = f"C:/Users/{user}/IdeaProjects" # Default IntelliJ project folder
     for p in os.listdir(path):
         if os.path.isdir(f"{path}/{p}"):
-            tracked.append([p, "IntelliJ"])
-
-
-def checkByTitle(title: str):
-    # checks every index of tracked list
-    # sees if the end of the title matches with the tracked title
-    # returns the show title if positive
-    # returns False if the title didnt match any of the tracked titles
-    for t in tracked:
-        if title.startswith(t[0]) or title.endswith(t[0]):
-            if len(t) == 2:
-                return t[1]
-            else:
-                return t[0]
-    return False
+            tags.append([p, "IntelliJ"])
 
 
 def checkForTags(title):
@@ -54,21 +34,33 @@ def checkForTags(title):
     # if the matching tag is a list, the second index will be append if the first index is positive
     # returns a list of tags that matched
     matches = []
+    title = title.lower()
+
+    for mtag in multiTags:
+        if mtag in title:
+            matches.append(mtag)
+
+    title = re.split(r'[, .:]', title)
+
     for tag in tags:
         if type(tag) == str:
-            if tag in title.lower():
-                matches.append(tag)
-        else:
-            if tag[0] in title.lower() and tag[1] not in matches:
-                matches.append(tag[1])
+            tag = [tag, tag]
+        if tag[0] in title and tag[1] not in matches:
+            matches.append(tag[1])
+        
     return matches
 
 
 def getFocus():
     windowTitle = GetWindowText(GetForegroundWindow()) # gets the currently focused window's title
-    showTitle = checkByTitle(windowTitle)
     tags = checkForTags(windowTitle)
-    return showTitle, tags # extracts data from the title
+    return tags # extracts data from the title
 
 
 checkForIntelliJ()
+
+i=0
+while i < 10:
+    print(getFocus())
+    i+=1
+    sleep(4)
