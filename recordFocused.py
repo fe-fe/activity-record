@@ -1,6 +1,5 @@
 from win32gui import GetWindowText, GetForegroundWindow
 from time import sleep
-from nltk.tokenize import word_tokenize
 
 
 tracked = [
