@@ -1,14 +1,16 @@
-from win32gui import GetWindowText, GetForegroundWindow
+from win32gui import GetWindowText, GetForegroundWindow, GetClassName
 from time import sleep
+from getpass import getuser
+import os
 
 
 tracked = [
 #   (title in window, title to be shown if positive)
-    ("Visual Studio Code", "Visual Studio Code"),
-    ("Stack Overflow - Brave", "Stack Overflow"),
-    ("Linkedin", "Linkedin"),
-    ("Command Prompt", "Command Prompt"),
-    ("GitHub Desktop", "GitHub")
+    ["Visual Studio Code"],
+    ["Stack Overflow - Brave", "Stack Overflow"],
+    ["Linkedin"],
+    ["Command Prompt"],
+    ["GitHub Desktop", "GitHub"]
 ]
 
 
@@ -22,14 +24,27 @@ tags = [
 ]
 
 
-def checkByLengthMatch(title):
+def checkForIntelliJ():
+    # appends to the tracked list the name of the projects from your IntelliJ folder
+    # if positive, the name shown will be "IntelliJ" instead of the project's name
+    user = getuser()
+    path = f"C:/Users/{user}/IdeaProjects" # Default IntelliJ project folder
+    for p in os.listdir(path):
+        if os.path.isdir(f"{path}/{p}"):
+            tracked.append([p, "IntelliJ"])
+
+
+def checkByTitle(title: str):
     # checks every index of tracked list
     # sees if the end of the title matches with the tracked title
     # returns the show title if positive
     # returns False if the title didnt match any of the tracked titles
     for t in tracked:
-        if title[len(title)-len(t[0]):] == t[0]:
-            return t[1]
+        if title.startswith(t[0]) or title.endswith(t[0]):
+            if len(t) == 2:
+                return t[1]
+            else:
+                return t[0]
     return False
 
 
@@ -41,25 +56,19 @@ def checkForTags(title):
     matches = []
     for tag in tags:
         if type(tag) == str:
-            if tag in title:
+            if tag in title.lower():
                 matches.append(tag)
         else:
-            if tag[0] in title and tag[1] not in matches:
+            if tag[0] in title.lower() and tag[1] not in matches:
                 matches.append(tag[1])
     return matches
 
 
 def getFocus():
     windowTitle = GetWindowText(GetForegroundWindow()) # gets the currently focused window's title
-    print(windowTitle)
-    showTitle = checkByLengthMatch(windowTitle)
+    showTitle = checkByTitle(windowTitle)
     tags = checkForTags(windowTitle)
-    print(tags)
     return showTitle, tags # extracts data from the title
 
 
-i = 0
-while i < 10:
-    getFocus()
-    i += 1
-    sleep(10)
+checkForIntelliJ()
