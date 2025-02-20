@@ -12,15 +12,14 @@ tags = [
     # one-tags that must be tracked
     # if the index is an array, the first index is the word to be matched 
     # and the second is the one to be shown
-    "python", ["py", "python"], "java", "selenium", "javascript", ["js", "javascript"], 
-    "flutter", "bootstrap", "spring", ["nlp", "natural language processing"], "flask",
-    ["pln", "natural language processing"], "html", "css", "git", "django",
-    "github", "react", "angular", "linkedin", "json", ["ts", "typescript"], "coursera"
-    
+    "Python", ["py", "Python"], "Java", "Selenium", "JavaScript", ["js", "JavaScript"], 
+    "Flutter", "Bootstrap", "Spring", ["nlp", "Natural Language rocessing"], "Flask",
+    ["pln", "Natural Language Processing"], "HTML", "CSS", "Git", "Django",
+    "GitHub", "React", "Angular", "Linkedin", "JSON", ["ts", "TypeScript"], "Coursera"  
 ]
 
 multiTags = [
-    "visual studio code", "stack overflow", "natural language processing", "tensor flow" 
+    "Visual Studio Code", "Stack Overflow", "Natural Language Processing", "Tensor Flow" 
 ]
 
 def checkForIntelliJ():
@@ -42,7 +41,7 @@ def checkForTags(title):
     title = title.lower()
 
     for mtag in multiTags:
-        if mtag in title:
+        if mtag.lower() in title:
             matches.append(mtag)
 
     title = re.split(r'[, .:]', title)
@@ -50,7 +49,7 @@ def checkForTags(title):
     for tag in tags:
         if type(tag) == str:
             tag = [tag, tag]
-        if tag[0] in title and tag[1] not in matches:
+        if tag[0].lower() in title and tag[1] not in matches:
             matches.append(tag[1])
         
     return matches
