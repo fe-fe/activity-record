@@ -4,6 +4,7 @@ Script que verifica dados da janela em foco do windows extrair palavras-chave co
 Feito para expor o progresso do meu trabalho no meu site de portfolio: https://fe-fe.github.io/activity
 
 a busca e feita procurando por tags de uma ou varias palavras (ex. "Python" ou "Stack Overflow") dentro do titulo da pagina que esta atualmente em uso, e grava o periodo em que elas sao positivas para monitorar o tempo de trabalho. 
+
 ---
 
 ![pasta do projeto](README/screenshot.png)
