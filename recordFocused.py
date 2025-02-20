@@ -100,7 +100,7 @@ while True:
         sleep(5)
     
     elapsed = datetime.now() - start 
-    elapsed = (elapsed.total_seconds())/3600
+    elapsed = round((elapsed.total_seconds())/3600, 3)
     
     writeAcitivity(current, elapsed)
 
