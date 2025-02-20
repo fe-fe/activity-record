@@ -66,7 +66,7 @@ def writeAcitivity(tags, time):
         with open("activity.json", "r") as activity:
             data:dict = json.load(activity)
     except:
-        data = {}
+        data = {"last_wipe": str(datetime.today().date())}
 
     for tag in tags:
         tag = re.sub(" ", "_", tag)
