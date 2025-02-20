@@ -15,7 +15,7 @@ tags = [
     "python", ["py", "python"], "java", "selenium", "javascript", ["js", "javascript"], 
     "flutter", "bootstrap", "spring", ["nlp", "natural language processing"], "flask",
     ["pln", "natural language processing"], "html", "css", "git", "django",
-    "github", "react", "angular", "linkedin", "json", ["ts", "typescript"],
+    "github", "react", "angular", "linkedin", "json", ["ts", "typescript"], "coursera"
     
 ]
 
