@@ -61,7 +61,7 @@ def getFocus():
     return tags # extracts data from the title
 
 
-def writeAcitivity(tags, time):
+def writeActivity(tags, time):
     try:
         with open("activity.json", "r") as activity:
             data:dict = json.load(activity)
@@ -70,9 +70,14 @@ def writeAcitivity(tags, time):
 
     for tag in tags:
         tag = re.sub(" ", "_", tag)
-        hours = data.get(tag) # int or None
-        if not hours:
+        entry = next((entry for entry in data["activity"] if entry["name"] == tag), None)
+
+        if entry:
+            hours = entry["time_spent"]
+            data["activity"].remove(entry)
+        else:
             hours = 0
+            
         data["activity"].append({"name": tag, "time_spent": hours + time})
 
     result = json.dumps(data, indent=4)
@@ -102,7 +107,7 @@ while True:
     elapsed = datetime.now() - start 
     elapsed = round((elapsed.total_seconds())/3600, 3)
     
-    writeAcitivity(current, elapsed)
+    writeActivity(current, elapsed)
 
     if ((datetime.now() - lastcommit).total_seconds()/3600) >= 3:
         commitActivity()

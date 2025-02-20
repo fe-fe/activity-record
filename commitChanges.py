@@ -82,4 +82,4 @@ def commitActivity():
     return response.json(), response.ok
 
 
-commitActivity()
+#commitActivity()
