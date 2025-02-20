@@ -30,7 +30,10 @@ def getFileSHA():
 def loadActivity():
     # returns a Dict object of the content of activity.json
     with open("activity.json", "rb") as activity:
-        data = base64.b64encode(activity.read()).decode("utf-8")
+
+        toJS = b"var data = " + activity.read()
+
+        data = base64.b64encode(toJS).decode("utf-8")
     return data
 
 
@@ -45,7 +48,7 @@ def isWipeDay(today: datetime):
     if lastWipe != str(today.date()) and today.weekday() == 6:
         with open("activity.json", "w") as activity:
             data = {"last_wipe": str(today.date())}
-            activity.write(json.dumps(data, indent=4)) # writes only the last wipe day
+            activity.write(b"var data = " + json.dumps(data, indent=4)) # writes only the last wipe day
         return True
     else:
         return False
