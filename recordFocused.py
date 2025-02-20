@@ -73,7 +73,7 @@ def writeAcitivity(tags, time):
         hours = data.get(tag) # int or None
         if not hours:
             hours = 0
-        data["activity"].append({tag: hours + time})
+        data["activity"].append({"name": tag, "time_spent": hours + time})
 
     result = json.dumps(data, indent=4)
 
