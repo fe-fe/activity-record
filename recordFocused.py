@@ -13,13 +13,13 @@ tags = [
     # if the index is an array, the first index is the word to be matched 
     # and the second is the one to be shown
     "Python", ["py", "Python"], "Java", "Selenium", "JavaScript", ["js", "JavaScript"], 
-    "Flutter", "Bootstrap", "Spring", ["nlp", "Natural Language rocessing"], "Flask",
-    ["pln", "Natural Language Processing"], "HTML", "CSS", "Git", "Django",
+    "Flutter", "Bootstrap", "Spring", ["nlp", "PLN"], "Flask",
+    "PLN", "HTML", "CSS", "Git", "Django",
     "GitHub", "React", "Angular", "Linkedin", "JSON", ["ts", "TypeScript"], "Coursera"  
 ]
 
 multiTags = [
-    "Visual Studio Code", "Stack Overflow", "Natural Language Processing", "Tensor Flow" 
+    "Visual Studio Code", "Stack Overflow", "Tensor Flow" 
 ]
 
 def checkForIntelliJ():
@@ -104,7 +104,7 @@ while True:
     
     writeAcitivity(current, elapsed)
 
-    if ((datetime.now() - lastcommit).total_seconds()/3600) >= 5:
+    if ((datetime.now() - lastcommit).total_seconds()/3600) >= 3:
         commitActivity()
 
      

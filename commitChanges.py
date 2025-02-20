@@ -30,25 +30,29 @@ def getFileSHA():
 def loadActivity():
     # returns a Dict object of the content of activity.json
     with open("activity.json", "rb") as activity:
+        return activity.read()
+        
 
-        toJS = b"var data = " + activity.read()
-
-        data = base64.b64encode(toJS).decode("utf-8")
-    return data
+def toJS(b):
+    return b"var data = " + b
 
 
-def isWipeDay(today: datetime):
+def encode(file_str) -> bytes:
+    return base64.b64encode(file_str).decode("utf-8")
+
+
+def isWipeDay(today: datetime) -> bool:
     # returns True if the file should be cleaned
-    with open("activity.json", "r") as activity:
-        data = dict(json.load(activity))
-        lastWipe = data.get("last_wipe")
+    content = loadActivity().decode("utf-8")
+    data = dict(json.loads(content))
+    lastWipe = data.get("last_wipe")
 
     # the activity hasn't been wiped today and today is sunday 
     # sunday = 6
     if lastWipe != str(today.date()) and today.weekday() == 6:
         with open("activity.json", "w") as activity:
             data = {"last_wipe": str(today.date())}
-            activity.write(b"var data = " + json.dumps(data, indent=4)) # writes only the last wipe day
+            activity.write(toJS(json.dumps(data, indent=4))) # writes only the last wipe day
         return True
     else:
         return False
@@ -61,7 +65,11 @@ def commitActivity():
     # calls isWipeDay() the clean the file if today is a sunday and the file hasn't been clean today
 
     isWipeDay(datetime.today())
+
     fileContent = loadActivity()
+    fileContent = toJS(fileContent)
+    fileContent = encode(fileContent)
+
     sha = getFileSHA()
 
     data = {
