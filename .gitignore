@@ -10,8 +10,8 @@ __pycache__/
 # C extensions
 *.so
 
-# Watchlist
-watchlist/*
+# Personal Activity Data
+activity.json
 
 # Distribution / packaging
 .Python
