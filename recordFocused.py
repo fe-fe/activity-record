@@ -66,14 +66,14 @@ def writeAcitivity(tags, time):
         with open("activity.json", "r") as activity:
             data:dict = json.load(activity)
     except:
-        data = {"last_wipe": str(datetime.today().date())}
+        data = {"last_wipe": str(datetime.today().date()), "activity": []}
 
     for tag in tags:
         tag = re.sub(" ", "_", tag)
         hours = data.get(tag) # int or None
         if not hours:
             hours = 0
-        data[tag] = hours + time
+        data["activity"].append({tag: hours + time})
 
     result = json.dumps(data, indent=4)
 
