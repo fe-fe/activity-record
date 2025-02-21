@@ -51,7 +51,7 @@ def isWipeDay(today: datetime) -> bool:
     # sunday = 6
     if lastWipe != str(today.date()) and today.weekday() == 6:
         with open("activity.json", "w") as activity:
-            data = {"last_wipe": str(today.date())}
+            data = {"last_wipe": str(today.date()), "activity": []}
             activity.write(toJS(json.dumps(data, indent=4))) # writes only the last wipe day
         return True
     else:
