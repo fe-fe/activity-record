@@ -33,9 +33,8 @@ def loadActivity():
         return activity.read()
         
 
-def toJS(b):
+def toJS(b: bytes):
     return b"var data = " + b
-
 
 def encode(file_str) -> bytes:
     return base64.b64encode(file_str).decode("utf-8")
@@ -52,7 +51,7 @@ def isWipeDay(today: datetime) -> bool:
     if lastWipe != str(today.date()) and today.weekday() == 6:
         with open("activity.json", "w") as activity:
             data = {"last_wipe": str(today.date()), "activity": []}
-            activity.write(toJS(json.dumps(data, indent=4))) # writes only the last wipe day
+            activity.write((json.dumps(data, indent=4))) # writes only the last wipe day
         return True
     else:
         return False
@@ -81,5 +80,4 @@ def commitActivity():
     response = requests.put(api_url, headers=headers, data=json.dumps(data))
     return response.json(), response.ok
 
-
-#commitActivity()
+commitActivity()
