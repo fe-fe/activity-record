@@ -80,4 +80,6 @@ def commitActivity():
     response = requests.put(api_url, headers=headers, data=json.dumps(data))
     return response.json(), response.ok
 
-commitActivity()
+
+if __name__ == "__main__":
+    commitActivity()
