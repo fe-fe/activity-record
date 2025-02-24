@@ -87,15 +87,9 @@ def writeActivity(tags, time):
         activity.write(result)
 
 
-checkForIntelliJ()
-lastcommit = datetime.now()
-
-
 async def waitForInput():
     await asyncio.to_thread(input, "::: press any key to stop :::")
 
-
-run = True
 
 async def mainLoop():
     global run
@@ -130,5 +124,9 @@ async def main():
     run = False
     print("Program terminated")
 
+
+checkForIntelliJ()
+lastcommit = datetime.now()
+run = True
 
 asyncio.run(main())
