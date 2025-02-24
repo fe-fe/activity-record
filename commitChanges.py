@@ -12,6 +12,7 @@ REPO=os.getenv("REPO")
 REPOPATH=os.getenv("REPOPATH")
 BRANCH=os.getenv("BRANCH")
 TOKEN=os.getenv("TOKEN")
+OUTPUT=os.getenv("OUTPUT")
 
 api_url = f"https://api.github.com/repos/{GHUSER}/{REPO}/contents/{REPOPATH}"
 
@@ -29,7 +30,7 @@ def getFileSHA():
 
 def loadActivity():
     # returns a Dict object of the content of activity.json
-    with open("activity.json", "rb") as activity:
+    with open(OUTPUT, "rb") as activity:
         return activity.read()
         
 
@@ -49,7 +50,7 @@ def isWipeDay(today: datetime) -> bool:
     # the activity hasn't been wiped today and today is sunday 
     # sunday = 6
     if lastWipe != str(today.date()) and today.weekday() == 6:
-        with open("activity.json", "w") as activity:
+        with open(OUTPUT, "w") as activity:
             data = {"last_wipe": str(today.date()), "activity": []}
             activity.write((json.dumps(data, indent=4))) # writes only the last wipe day
         return True

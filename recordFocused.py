@@ -6,6 +6,10 @@ from datetime import datetime
 import json
 from commitChanges import commitActivity
 import asyncio
+from dotenv import load_dotenv
+
+load_dotenv()
+OUTPUT=os.getenv("OUTPUT")
 
 
 tags = [
@@ -63,7 +67,7 @@ def getFocus():
 
 def writeActivity(tags, time):
     try:
-        with open("activity.json", "r") as activity:
+        with open(OUTPUT, "r") as activity:
             data:dict = json.load(activity)
     except:
         data = {"last_wipe": str(datetime.today().date()), "activity": []}
@@ -82,12 +86,12 @@ def writeActivity(tags, time):
 
     result = json.dumps(data, indent=4)
 
-    with open("activity.json", "w") as activity:
+    with open(OUTPUT, "w") as activity:
         activity.write(result)
 
 
 async def waitForInput():
-    await asyncio.to_thread(input, "::: press any key to stop :::")
+    await asyncio.to_thread(input, "::: press any key to stop\n")
 
 
 async def mainLoop():
@@ -121,6 +125,7 @@ async def main():
     asyncio.create_task(mainLoop())
     await waitForInput()
     run = False
+    print("::: program terminated")
 
 
 checkForIntelliJ()
