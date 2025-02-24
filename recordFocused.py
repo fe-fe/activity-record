@@ -1,5 +1,4 @@
 from win32gui import GetWindowText, GetForegroundWindow
-from time import sleep
 from getpass import getuser
 import os
 import re
@@ -10,8 +9,8 @@ import asyncio
 
 
 tags = [
-    # one-tags that must be tracked
-    # if the index is an array, the first index is the word to be matched 
+    # one-word tags that must be tracked
+    # if the tag is an array[2], the first index is the word to be matched 
     # and the second is the one to be shown
     "Python", ["py", "Python"], "Java", "Selenium", "JavaScript", ["js", "JavaScript"], 
     "Flutter", "Bootstrap", "Spring", ["nlp", "PLN"], "Flask",
@@ -122,7 +121,6 @@ async def main():
     asyncio.create_task(mainLoop())
     await waitForInput()
     run = False
-    print("Program terminated")
 
 
 checkForIntelliJ()
