@@ -6,6 +6,7 @@ import re
 from datetime import datetime
 import json
 from commitChanges import commitActivity
+import asyncio
 
 
 tags = [
@@ -78,7 +79,7 @@ def writeActivity(tags, time):
         else:
             hours = 0
             
-        data["activity"].append({"name": tag, "time_spent": hours + time})
+        data["activity"].append({"name": tag, "time_spent": round(hours + time, 3)})
 
     result = json.dumps(data, indent=4)
 
@@ -89,27 +90,45 @@ def writeActivity(tags, time):
 checkForIntelliJ()
 lastcommit = datetime.now()
 
-while True:
 
-    # the current window's data (tags) is extracted
-    # and the current time is stored in "start"
-    # the program sleeps until the program identifies changes in the tags
-    # and then it writes the tags and how much time in hours they have been positive 
-    # commit changes every 5 hours
+async def waitForInput():
+    await asyncio.to_thread(input, "::: press any key to stop :::")
 
-    current = getFocus()
-    start = datetime.now()
-    sleep(5)
-    
-    while current == getFocus():
-        sleep(5)
-    
-    elapsed = datetime.now() - start 
-    elapsed = round((elapsed.total_seconds())/3600, 3)
-    
-    writeActivity(current, elapsed)
 
-    if ((datetime.now() - lastcommit).total_seconds()/3600) >= 3:
-        commitActivity()
+run = True
 
-     
+async def mainLoop():
+    global run
+    while run:
+
+        # the current window's data (tags) is extracted
+        # and the current time is stored in "start"
+        # the program sleeps until the program identifies changes in the tags
+        # and then it writes the tags and how much time in hours they have been positive 
+        # commit changes every 5 hours
+
+        current = getFocus()
+        start = datetime.now()
+        await asyncio.sleep(5)
+        
+        while current == getFocus():
+            await asyncio.sleep(5)
+        
+        elapsed = datetime.now() - start 
+        elapsed = (elapsed.total_seconds())/3600
+        
+        writeActivity(current, elapsed)
+
+        if ((datetime.now() - lastcommit).total_seconds()/3600) >= 3:
+            commitActivity()
+
+
+async def main():
+    global run
+    asyncio.create_task(mainLoop())
+    await waitForInput()
+    run = False
+    print("Program terminated")
+
+
+asyncio.run(main())
