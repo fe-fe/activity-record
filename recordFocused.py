@@ -19,7 +19,7 @@ tags = [
     "Python", ["py", "Python"], "Java", "Selenium", "JavaScript", ["js", "JavaScript"], 
     "Flutter", "Bootstrap", "Spring", ["nlp", "PLN"], "Flask",
     "PLN", "HTML", "CSS", "Git", "Django",
-    "GitHub", "React", "Angular", "Linkedin", "JSON", ["ts", "TypeScript"], "Coursera"  
+    "GitHub", "React", "Angular", "Linkedin", "JSON", ["ts", "TypeScript"], "Coursera", "Flask"
 ]
 
 multiTags = [

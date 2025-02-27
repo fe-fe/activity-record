@@ -16,17 +16,11 @@ OUTPUT=os.getenv("OUTPUT")
 
 api_url = f"https://api.github.com/repos/{GHUSER}/{REPO}/contents/{REPOPATH}"
 
-headers = {
+headers = { # required to commit a file to GitHub
     'Authorization': f'token {TOKEN}',
     'Accept': 'application/vnd.github.v3+json'
 }
 
-
-def getFileSHA():
-    # returns the file's SHA hash by requesting it to GitHub's API
-    response = requests.get(api_url, headers=headers)
-    return response.json()["sha"]
-    
 
 def loadActivity():
     # returns a Dict object of the content of activity.json
@@ -34,10 +28,17 @@ def loadActivity():
         return activity.read()
         
 
-def toJS(b: bytes):
-    return b"var data = " + b
+def getFileSHA(): # required to commit a file to a github repository
+    # returns the file's SHA hash by requesting it to GitHub's API
+    response = requests.get(api_url, headers=headers)
+    return response.json()["sha"]
 
-def encode(file_str) -> bytes:
+
+def toJS(b: bytes): # required to be used in a GitHub Page's website
+    return b"var data = " + b # turns the json into a JavaScript Object variable
+
+
+def encode(file_str) -> bytes: # required to commit a file to a github repository
     return base64.b64encode(file_str).decode("utf-8")
 
 
