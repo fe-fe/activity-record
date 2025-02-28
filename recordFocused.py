@@ -17,13 +17,13 @@ tags = [
     # if the tag is an array[2], the first index is the word to be matched 
     # and the second is the one to be shown
     "Python", ["py", "Python"], "Java", "Selenium", "JavaScript", ["js", "JavaScript"], 
-    "Flutter", "Bootstrap", "Spring", ["nlp", "PLN"], "Flask",
-    "PLN", "HTML", "CSS", "Git", "Django",
-    "GitHub", "React", "Angular", "Linkedin", "JSON", ["ts", "TypeScript"], "Coursera", "Flask"
+    "Flutter", "Bootstrap", "Spring", ["nlp", "PLN"], "Flask", "PLN", "HTML", "CSS", "Git", "Django",
+    "GitHub", "React", "Angular", "Linkedin", "JSON", ["ts", "TypeScript"], "Coursera", "TypeScript",
+    "Dart"
 ]
 
 multiTags = [
-    "Visual Studio Code", "Stack Overflow", "Tensor Flow" 
+    "Visual Studio Code", "Stack Overflow", "Tensor Flow", "React Native" 
 ]
 
 def checkForIntelliJ():
@@ -48,7 +48,7 @@ def checkForTags(title):
         if mtag.lower() in title:
             matches.append(mtag)
 
-    title = re.split(r'[, .:]', title)
+    title = re.split(r'[, .:-]', title)
 
     for tag in tags:
         if type(tag) == str:
