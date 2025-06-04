@@ -4,9 +4,11 @@
  */
 package me.mafer.activity;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.Set;
 
 /**
@@ -15,10 +17,11 @@ import java.util.Set;
  */
 public class Subject {
     
-    private final static Set<Subject> subjects = Collections.synchronizedSet(new HashSet<>());
+    private final static List<Subject> subjects = Collections.synchronizedList(new ArrayList<>());
     
     private final String name;
-    private Set<String> aliases;
+    private final Set<String> aliases;
+    private Pattern regexPattern;
     
     private Subject(String name) {
         this.name = name;
@@ -28,17 +31,13 @@ public class Subject {
     public static Subject addNewSubject(String name) {
         Subject newSubject = new Subject(name);
         newSubject.addAlias(name);
+        newSubject.generateRegexPattern();
         subjects.add(newSubject);
         return newSubject;
     }
     
     private boolean isSubjectInTitle(String title) {
-        for (String alias : this.aliases) {
-            if (title.toLowerCase().contains(alias.toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
+        return regexPattern.matcher(title).find();
     }
     
     public static Set<Subject> getSubjectsInTitle(String title) {
@@ -57,14 +56,38 @@ public class Subject {
     }
     
     public void addAlias(String alias) {
-        this.aliases.add(alias);
+        aliases.add(alias);
+        generateRegexPattern();
+        
     } 
     
     public void removeAlias(String alias) {
-        this.aliases.remove(alias);
+        aliases.remove(alias);
     }
     
     public String getName() {
         return name;
+    }
+    
+    public void generateRegexPattern() {
+        if (aliases == null || aliases.isEmpty()) {
+            return;
+        }
+
+        StringBuilder newRegexPattern = new StringBuilder();
+        newRegexPattern.append("(?:^|[ .-_])(");
+
+        ArrayList<String> aliasesArray = new ArrayList<>(aliases);
+
+        for (int i = 0; i < aliasesArray.size(); i++) {
+            newRegexPattern.append(Pattern.quote(aliasesArray.get(i)));
+            if (i < aliasesArray.size() - 1) {
+                newRegexPattern.append("|");
+            }
+        }
+
+        newRegexPattern.append(")(?:$|[ .:-_,])");
+        
+        this.regexPattern = Pattern.compile(newRegexPattern.toString(), Pattern.CASE_INSENSITIVE);
     }
 }

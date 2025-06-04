@@ -4,7 +4,6 @@
  */
 package me.mafer.activity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
@@ -23,7 +22,6 @@ public class Session {
     private long elapsedTime;
     private final SessionNature nature;
 
-    
     private Session(Subject subject) {
         this.subject = subject;
         this.nature = ActivityRecorder.getCurrentNature();

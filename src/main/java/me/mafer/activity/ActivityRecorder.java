@@ -28,15 +28,23 @@ public class ActivityRecorder extends Thread {
             long startTime = System.currentTimeMillis();
             String currentTitle = WindowTitleFetcher.getActiveWindowTitle();
             
-            while (WindowTitleFetcher.getActiveWindowTitle().equals(currentTitle)) {}
+            while (WindowTitleFetcher.getActiveWindowTitle().equals(currentTitle)) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
             
-            long elapsedTime = System.currentTimeMillis() - startTime;
-            Set<Subject> subjects = Subject.getSubjectsInTitle(currentTitle);
-            if (!subjects.isEmpty()) {
-                for (Subject subject : subjects) {
-                    Session session = Session.getMatchingActiveSession(subject);
-                    session.sumElapsedTime(elapsedTime);
-                    System.out.println(session);
+            if (!currentTitle.isEmpty()) {
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                Set<Subject> subjects = Subject.getSubjectsInTitle(currentTitle);
+                if (!subjects.isEmpty()) {
+                    for (Subject subject : subjects) {
+                        Session session = Session.getMatchingActiveSession(subject);
+                        session.sumElapsedTime(elapsedTime);
+                        System.out.println(session);
+                    }
                 }
             }
         }
