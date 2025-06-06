@@ -22,7 +22,7 @@ public class WindowTitleFetcher {
         switch (osName) {
             case "Linux":
                 return getLinuxActiveWindowTitle();
-            case "Windows":
+            case "Windows 10":
                 return getWindowsActiveWindowTitle();
             default:
                 return "unsupported os";      
